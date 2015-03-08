@@ -58,7 +58,7 @@ class ImagePlayer(gobject.GObject):
         rect = self.ventana.get_allocation()
         ctx = self.ventana.get_property("window").cairo_create()
         ctx.rectangle(event.area.x, event.area.y,
-            event.area.width, event.area.height)
+                      event.area.width, event.area.height)
         ctx.clip()
         temp_pixbuf = self.pixbuf.scale_simple(
             rect.width, rect.height, gtk.gdk.INTERP_TILES)

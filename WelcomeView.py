@@ -29,12 +29,12 @@ from Globales import COLORES, is_xo
 class WelcomeView(gtk.EventBox):
 
     __gsignals__ = {
-    "instructions": (gobject.SIGNAL_RUN_FIRST,
-        gobject.TYPE_NONE, ( )),
-    "credits": (gobject.SIGNAL_RUN_FIRST,
-        gobject.TYPE_NONE, ( )),
-    "start": (gobject.SIGNAL_RUN_FIRST,
-        gobject.TYPE_NONE, ( ))}
+        "instructions": (gobject.SIGNAL_RUN_FIRST,
+                         gobject.TYPE_NONE, ()),
+        "credits": (gobject.SIGNAL_RUN_FIRST,
+                    gobject.TYPE_NONE, ()),
+        "start": (gobject.SIGNAL_RUN_FIRST,
+                  gobject.TYPE_NONE, ())}
 
     def __init__(self):
 
@@ -42,7 +42,6 @@ class WelcomeView(gtk.EventBox):
 
         self.modify_bg(gtk.STATE_NORMAL, COLORES["contenido"])
         self.set_border_width(4)
-
 
         self.image = gtk.Image()
         self.image.set_from_file("Imagenes/ple.png")
@@ -120,8 +119,12 @@ class WelcomeView(gtk.EventBox):
         screen = self.window.get_screen()
         offset = 220 if not is_xo() else 340
         desired_height = screen.get_height() - offset
-        desired_width = pixbuf.get_height() / desired_height * pixbuf.get_width()
-        pixbuf = pixbuf.scale_simple(desired_width , desired_height, gtk.gdk.INTERP_BILINEAR)
+        desired_width = pixbuf.get_height() / desired_height * \
+            pixbuf.get_width()
+        pixbuf = pixbuf.scale_simple(
+            desired_width,
+            desired_height,
+            gtk.gdk.INTERP_BILINEAR)
         self.image.set_from_pixbuf(pixbuf)
 
     def run(self):

@@ -33,18 +33,21 @@ import gtk
 #            corner is on the North West corner of the button.
 # POS_SE_NE: Positions the pop-up window so that its South East (bottom right)
 #            corner is on the North East corner of the button. RTL of POS_SW_NW
-POS_CENTER_BELOW, POS_CENTER_ABOVE, POS_NW_SW, POS_NE_SE, POS_NW_NE, POS_SW_NW, POS_SE_NE = range(7)
+POS_CENTER_BELOW, POS_CENTER_ABOVE, POS_NW_SW, POS_NE_SE, POS_NW_NE, POS_SW_NW, POS_SE_NE = range(
+    7)
 # XXX: Add position symbols above as needed and implementation in
 #      _update_popup_geometry()
 
 _rtl_pos_map = {
-        POS_CENTER_BELOW: POS_CENTER_BELOW,
-        POS_CENTER_ABOVE: POS_CENTER_ABOVE,
-        POS_SW_NW: POS_SE_NE,
-        POS_NW_SW: POS_NE_SE,
+    POS_CENTER_BELOW: POS_CENTER_BELOW,
+    POS_CENTER_ABOVE: POS_CENTER_ABOVE,
+    POS_SW_NW: POS_SE_NE,
+    POS_NW_SW: POS_NE_SE,
 }
 
+
 class PopupMenuButton(gtk.ToggleButton):
+
     """A toggle button that displays a pop-up menu when clicked."""
 
     # INITIALIZERS #
@@ -60,23 +63,24 @@ class PopupMenuButton(gtk.ToggleButton):
 
         self.connect('toggled', self._on_toggled)
 
-
     # ACCESSORS #
     def set_menu(self, menu):
         if getattr(self, '_menu_selection_done_id', None):
             self.menu.disconnect(self._menu_selection_done_id)
         self.menu = menu
-        self._menu_selection_done_id = self.menu.connect('selection-done', self._on_menu_selection_done)
+        self._menu_selection_done_id = self.menu.connect(
+            'selection-done',
+            self._on_menu_selection_done)
 
     def get_label_widget(self):
         return self.child
 
     def _get_text(self):
         return unicode(self.get_label())
+
     def _set_text(self, value):
         self.set_label(value)
     text = property(_get_text, _set_text)
-
 
     # METHODS #
     def _calculate_popup_pos(self, menu):
@@ -117,7 +121,6 @@ class PopupMenuButton(gtk.ToggleButton):
 
     def popup(self):
         self.menu.popup(None, None, self._calculate_popup_pos, 0, 0)
-
 
     # EVENT HANDLERS #
     def _on_menu_selection_done(self, menu):

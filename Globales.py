@@ -41,7 +41,7 @@ COLORES = {
     "rojo": gdk.color_parse("#fe6e00"),
     "verde": gdk.color_parse("#00ff00"),
     "amarillo": gdk.color_parse("#ffff00"),
-    }
+}
 
 """
 user
@@ -97,7 +97,7 @@ def guardar(_dict, topic, palabra, respuesta, force_date=None):
     if not os.path.exists(dirpath):
         os.mkdir(dirpath)
     userpath = os.path.join(dirpath,
-        "%s %s" % (_dict["Nombre"], _dict["Apellido"]))
+                            "%s %s" % (_dict["Nombre"], _dict["Apellido"]))
     if not os.path.exists(userpath):
         os.mkdir(userpath)
         upath = os.path.join(userpath, "User")
@@ -128,12 +128,12 @@ def guardar(_dict, topic, palabra, respuesta, force_date=None):
         EF = 1.3
 
     def calc_I(n):
-        if n==1:
+        if n == 1:
             return 1
-        elif n==2:
+        elif n == 2:
             return 6
-        elif n>2:
-            return calc_I(n-1) * EF
+        elif n > 2:
+            return calc_I(n - 1) * EF
 
     I = calc_I(n)
 
@@ -154,7 +154,7 @@ def get_vocabulario(topic, _dict, force_date=None):
     if not os.path.exists(dirpath):
         os.mkdir(dirpath)
     userpath = os.path.join(dirpath,
-        "%s %s" % (_dict["Nombre"], _dict["Apellido"]))
+                            "%s %s" % (_dict["Nombre"], _dict["Apellido"]))
     if not os.path.exists(userpath):
         os.mkdir(userpath)
         upath = os.path.join(userpath, "User")
@@ -202,6 +202,7 @@ def decir(pitch, speed, word_gap, voice, text):
         _audio = espeak.AudioGrab()
         _audio.speak(text, pitch, speed, voice)
 
+
 class Dialog(gtk.Dialog):
 
     def __init__(self, title, parent, buttons, text):
@@ -218,6 +219,6 @@ class Dialog(gtk.Dialog):
     def __realize(self, widget):
         decir(50, 57, 0, "en-gb", self.get_title())
 
+
 def is_xo():
     return os.path.exists('/etc/olpc-release')
-

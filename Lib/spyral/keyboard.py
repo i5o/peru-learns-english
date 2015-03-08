@@ -22,7 +22,9 @@ import pygame
 
 old = sys.modules[__name__]
 
+
 class _KeyboardModule(types.ModuleType):
+
     def __init__(self, *args):
         types.ModuleType.__init__(self, *args)
         self._repeat = False

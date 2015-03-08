@@ -12,12 +12,13 @@ try:
 except ImportError:
     spyral.exceptions.actors_not_available_warning()
     _GREENLETS_AVAILABLE = False
-    
+
 from itertools import chain
 from layertree import _LayerTree
 from collections import defaultdict
 from weakref import ref as _wref
 from weakmethod import WeakMethodBound
+
 
 def _has_value(obj, collect):
     for item in collect:
@@ -29,7 +30,9 @@ def _has_value(obj, collect):
             return True
     return False
 
+
 class Scene(object):
+
     """
     Creates a new Scene. When a scene is not active, no events will be processed
     for it. Scenes are the basic units that are executed by spyral for your game,
@@ -47,7 +50,8 @@ class Scene(object):
     :param int max_fps: Maximum frames to draw per second. By default,
                         `max_fps` is pulled from the director.
     """
-    def __init__(self, size = None, max_ups=None, max_fps=None):
+
+    def __init__(self, size=None, max_ups=None, max_fps=None):
         time_source = time.time
         self.clock = spyral.GameClock(
             time_source=time_source,
@@ -61,7 +65,7 @@ class Scene(object):
         self._handling_events = False
         self._events = []
         self._pending = []
-        self._greenlets = {} # Maybe need to weakref dict
+        self._greenlets = {}  # Maybe need to weakref dict
 
         self._style_symbols = {}
         self._style_classes = []
@@ -71,7 +75,7 @@ class Scene(object):
         self._style_functions['_get_spyral_path'] = spyral._get_spyral_path
 
         self._size = None
-        self._scale = spyral.Vec2D(1.0, 1.0) #None
+        self._scale = spyral.Vec2D(1.0, 1.0)  # None
         self._surface = pygame.display.get_surface()
         if size is not None:
             self._set_size(size)
@@ -100,7 +104,7 @@ class Scene(object):
         spyral.event.register('director.update', self._handle_events,
                               scene=self)
         if _GREENLETS_AVAILABLE:
-            spyral.event.register('director.update', self._run_actors, 
+            spyral.event.register('director.update', self._run_actors,
                                   ('delta',), scene=self)
         spyral.event.register('spyral.internal.view.changed',
                               self._invalidate_views, scene=self)
@@ -190,7 +194,8 @@ class Scene(object):
         Internal method to dispatch events to their handlers.
         """
         fillval = "__spyral_itertools_fillvalue__"
-        def _get_arg_val(arg, default = fillval):
+
+        def _get_arg_val(arg, default=fillval):
             if arg == 'event':
                 return event
             elif hasattr(event, arg):
@@ -216,11 +221,11 @@ class Scene(object):
             # Autodetect the arguments
             try:
                 funct = handler.func
-            except AttributeError, e:
+            except AttributeError as e:
                 funct = handler
             try:
                 h_argspec = inspect.getargspec(funct)
-            except Exception, e:
+            except Exception as e:
                 raise Exception(("Unfortunate Python Problem! "
                                  "%s isn't supported by Python's "
                                  "inspect module! Oops.") % str(handler))
@@ -232,7 +237,7 @@ class Scene(object):
             if d > 0:
                 h_defaults = [fillval] * d + list(*h_defaults)
             args = [_get_arg_val(arg, default) for arg, default
-                                               in zip(h_args, h_defaults)]
+                    in zip(h_args, h_defaults)]
             kwargs = {}
         elif args is None:
             args = []
@@ -243,13 +248,13 @@ class Scene(object):
         if handler is not None:
             handler(*args, **kwargs)
 
-    def _handle_event(self, type, event = None):
+    def _handle_event(self, type, event=None):
         """
         For a given event, send the event information to all registered handlers
         """
         handlers = chain.from_iterable(self._handlers[namespace]
-                                            for namespace
-                                            in self._get_namespaces(type))
+                                       for namespace
+                                       in self._get_namespaces(type))
         for handler_info in handlers:
             if self._send_event_to_handler(event, type, *handler_info):
                 break
@@ -266,12 +271,14 @@ class Scene(object):
                 self._handle_event(type, event)
             self._events = self._pending
             self._pending = []
-    
+
     def _unregister_sprite_events(self, sprite):
         for name, handlers in self._handlers.items():
-            self._handlers[name] = [h for h in handlers
-                                        if (not isinstance(h[0], WeakMethodBound)
-                                            or h[0].weak_object_ref() is not sprite)]
+            self._handlers[name] = [
+                h for h in handlers if (
+                    not isinstance(
+                        h[0],
+                        WeakMethodBound) or h[0].weak_object_ref() is not sprite)]
             if not self._handlers[name]:
                 del self._handlers[name]
 
@@ -287,12 +294,14 @@ class Scene(object):
         """
         if event_namespace.endswith(".*"):
             event_namespace = event_namespace[:-2]
-        self._handlers[event_namespace] = [h for h
-                                             in self._handlers[event_namespace]
-                                             if ((not isinstance(h[0], WeakMethodBound) and handler != h[0])
-                                             or (isinstance(h[0], WeakMethodBound)
-                                                and ((h[0].func is not handler.im_func) 
-                                                or (h[0].weak_object_ref() is not handler.im_self))))]
+        self._handlers[event_namespace] = [
+            h for h in self._handlers[event_namespace] if (
+                (not isinstance(
+                    h[0], WeakMethodBound) and handler != h[0]) or (
+                    isinstance(
+                        h[0], WeakMethodBound) and (
+                        (h[0].func is not handler.im_func) or (
+                            h[0].weak_object_ref() is not handler.im_self))))]
         if not self._handlers[event_namespace]:
             del self._handlers[event_namespace]
 
@@ -327,7 +336,6 @@ class Scene(object):
 
     def _set_event_source(self, source):
         self._event_source = source
-
 
     # Style Handling
     def __stylize__(self, properties):
@@ -413,7 +421,6 @@ class Scene(object):
         """
         self._style_functions[name] = function
 
-
     # Rendering
     def _get_size(self):
         """
@@ -423,10 +430,11 @@ class Scene(object):
         (which could be scaled). This property can only be set once.
         """
         if self._size is None:
-            raise spyral.SceneHasNoSizeException("You should specify a size in "
-                                                 "the constructor or in a "
-                                                 "style file before other "
-                                                 "operations.")
+            raise spyral.SceneHasNoSizeException(
+                "You should specify a size in "
+                "the constructor or in a "
+                "style file before other "
+                "operations.")
         return self._size
 
     def _set_size(self, size):
@@ -453,7 +461,7 @@ class Scene(object):
         Returns a :class:`Rect <spyral.Rect>` representing the position (0, 0)
         and size of this Scene.
         """
-        return spyral.Rect((0,0), self.size)
+        return spyral.Rect((0, 0), self.size)
 
     def _get_scene(self):
         """
@@ -466,7 +474,6 @@ class Scene(object):
         Returns this scene. Read-only.
         """
         return self._scene()
-
 
     size = property(_get_size)
     width = property(_get_width)
@@ -580,7 +587,7 @@ class Scene(object):
         # This function sits in a potential hot loop
         # For that reason, some . lookups are optimized away
         screen = self._surface
-        
+
         # First we test if the background has been updated
         if self._background_version != self._background_image._version:
             self._set_background(self._background_image)
@@ -622,7 +629,8 @@ class Scene(object):
             blit_rect = blit.rect
             blit_flags = blit.flags if blit_flags_available else 0
             # If a blit is entirely off screen, we can ignore it altogether
-            if not screen_rect.contains(blit_rect) and not screen_rect.colliderect(blit_rect):
+            if not screen_rect.contains(
+                    blit_rect) and not screen_rect.colliderect(blit_rect):
                 continue
             if blit.static:
                 skip_soft_clear = False
@@ -654,7 +662,7 @@ class Scene(object):
                     r = screen.blit(blit.surface, blit_rect, None, blit_flags)
                     clear_next.append(r)
 
-        #pygame.display.set_caption("%d / %d static, %d dynamic. %d ups, %d fps" %
+        # pygame.display.set_caption("%d / %d static, %d dynamic. %d ups, %d fps" %
         #                           (drawn_static, static_blits,
         #                            dynamic_blits, self.clock.ups,
         #                            self.clock.fps))
@@ -709,8 +717,9 @@ class Scene(object):
         elif self._layers == layers:
             pass
         else:
-            raise spyral.LayersAlreadySetError("You can only define the layers "
-                                               "for a scene once.")
+            raise spyral.LayersAlreadySetError(
+                "You can only define the layers "
+                "for a scene once.")
 
     def _get_layers(self):
         """

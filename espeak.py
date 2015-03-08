@@ -59,13 +59,13 @@ class BaseAudioGrab(gobject.GObject):
         # and sends it to both the real audio output
         # and a fake one that we use to draw from
         self.pipeline = gst.parse_launch(
-                cmd + ' ' \
-                '! decodebin ' \
-                '! tee name=tee ' \
-                'tee.! audioconvert ' \
-                    '! alsasink ' \
-                'tee.! queue ' \
-                    '! audioconvert ! fakesink name=sink')
+            cmd + ' '
+            '! decodebin '
+            '! tee name=tee '
+            'tee.! audioconvert '
+            '! alsasink '
+            'tee.! queue '
+            '! audioconvert ! fakesink name=sink')
 
         def on_buffer(element, buffer, pad):
             # we got a new buffer of data, ask for another
@@ -89,7 +89,7 @@ class BaseAudioGrab(gobject.GObject):
                 self._was_message = False
                 gobject.timeout_add(500, self._new_buffer, str(buffer))
 
-            elif  message.type in (gst.MESSAGE_EOS, gst.MESSAGE_ERROR):
+            elif message.type in (gst.MESSAGE_EOS, gst.MESSAGE_ERROR):
                 logger.debug(message.type)
                 self.stop_sound_device()
 
@@ -111,7 +111,7 @@ try:
     from espeak_gst import AudioGrabGst as AudioGrab
     from espeak_gst import *
     logger.info('use gst-plugins-espeak')
-except Exception, e:
+except Exception as e:
     logger.info('disable gst-plugins-espeak: %s' % e)
     if subprocess.call('which espeak', shell=True) == 0:
         from espeak_cmd import AudioGrabCmd as AudioGrab

@@ -1,7 +1,9 @@
 """This module contains classes to handle memoization, a time-saving method that
 caches previously seen results from function calls."""
 
+
 class Memoize(object):
+
     """
     This is a decorator to allow memoization of function calls. It is a
     completely dumb cache, and will cache anything given to it indefinitely.
@@ -9,6 +11,7 @@ class Memoize(object):
     :param object func: Any function (although any object will work).
     .. warning:: This may be deprecated.
     """
+
     def __init__(self, func):
         self.func = func
         self.cache = {}
@@ -30,7 +33,9 @@ class Memoize(object):
                    "Reconsider using this decorator.")
             return self.func(*args)
 
+
 class SmartMemoize(object):
+
     """
     This is a decorator to allow memoization of function calls. Its cache
     is cleared on scene changes, and also clears items from the cache which
@@ -38,6 +43,7 @@ class SmartMemoize(object):
 
     :param object func: Any function (although any object will work).
     """
+
     def __init__(self, func):
         self.func = func
         self.cache = {}
@@ -74,11 +80,14 @@ class SmartMemoize(object):
                    "Reconsider using this decorator")
             return self.func(*args)
 
+
 class _ImageMemoize(SmartMemoize):
+
     """
     A subclass of SmartMemoise that is built explicitly for image related calls.
     It allows images to be cleared from its cache when they are updated.
     """
+
     def clear(self, clear_image):
         """
         Removes the given image from the cache.
@@ -86,5 +95,5 @@ class _ImageMemoize(SmartMemoize):
         :type clear_image: :class:`Image <spyral.Image>`
         """
         self.cache = dict(((image, scale) for (image, scale)
-                                          in self.cache.iteritems()
-                                          if image is clear_image))
+                           in self.cache.iteritems()
+                           if image is clear_image))

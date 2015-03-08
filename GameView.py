@@ -36,11 +36,12 @@ import pygame
 from ConfigParser import SafeConfigParser
 from Globales import COLORES
 
+
 class GameMenu(gtk.EventBox):
 
     __gsignals__ = {
-    "video": (gobject.SIGNAL_RUN_FIRST,
-        gobject.TYPE_NONE, (gobject.TYPE_STRING, ))}
+        "video": (gobject.SIGNAL_RUN_FIRST,
+                  gobject.TYPE_NONE, (gobject.TYPE_STRING, ))}
 
     def __init__(self):
 
@@ -145,8 +146,8 @@ class GameMenu(gtk.EventBox):
 class GameView(gtk.EventBox):
 
     __gsignals__ = {
-    "video": (gobject.SIGNAL_RUN_FIRST,
-        gobject.TYPE_NONE, (gobject.TYPE_STRING, ))}
+        "video": (gobject.SIGNAL_RUN_FIRST,
+                  gobject.TYPE_NONE, (gobject.TYPE_STRING, ))}
 
     def __init__(self):
 
@@ -256,11 +257,11 @@ class GameView(gtk.EventBox):
         from Games.ug1.runme import Intro
 
         rect = self.get_allocation()
-        self.lado = min(rect.width-8, rect.height-8)
+        self.lado = min(rect.width - 8, rect.height - 8)
         print self.lado
         self.pygamecanvas.set_size_request(self.lado, self.lado)
         spyral.director.init((self.lado, self.lado),
-            fullscreen=False, max_fps=30)
+                             fullscreen=False, max_fps=30)
         self.game = Intro(self.topic, self)
         spyral.director.push(self.game)
         if self.pump:
@@ -276,11 +277,11 @@ class GameView(gtk.EventBox):
         from Games.ug2.runme import Escena
 
         rect = self.get_allocation()
-        self.lado = min(rect.width-8, rect.height-8)
+        self.lado = min(rect.width - 8, rect.height - 8)
         print self.lado
         self.pygamecanvas.set_size_request(self.lado, self.lado)
         spyral.director.init((self.lado, self.lado),
-            fullscreen=False, max_fps=30)
+                             fullscreen=False, max_fps=30)
         self.game = Escena(self.topic, self)
         spyral.director.push(self.game)
         if self.pump:
@@ -296,11 +297,11 @@ class GameView(gtk.EventBox):
         from Games.ug3.runme import Escena
 
         rect = self.get_allocation()
-        self.lado = min(rect.width-8, rect.height-8)
+        self.lado = min(rect.width - 8, rect.height - 8)
         print self.lado
         self.pygamecanvas.set_size_request(self.lado, self.lado)
         spyral.director.init((self.lado, self.lado),
-            fullscreen=False, max_fps=30)
+                             fullscreen=False, max_fps=30)
         self.game = Escena(self.topic, gameview=self)
         spyral.director.push(self.game)
         if self.pump:
@@ -333,12 +334,12 @@ class GameView(gtk.EventBox):
         self.topic = topic
         self.pygamecanvas.grab_focus()
         self.show()
-        if game==0:
-            gamestart=self.__run_game_1
-        elif game==1:
-            gamestart=self.__run_game_2
-        elif game==2:
-            gamestart=self.__run_game_3
+        if game == 0:
+            gamestart = self.__run_game_1
+        elif game == 1:
+            gamestart = self.__run_game_2
+        elif game == 2:
+            gamestart = self.__run_game_3
         if self.firstrun:
             self.firstrun = False
             gobject.idle_add(self.pygamecanvas.run_pygame(gamestart))

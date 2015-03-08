@@ -31,8 +31,8 @@ BASE_PATH = os.path.dirname(__file__)
 class PlayerControls(gtk.EventBox):
 
     __gsignals__ = {
-    "accion-controls": (gobject.SIGNAL_RUN_LAST,
-        gobject.TYPE_NONE, (gobject.TYPE_STRING,))}
+        "accion-controls": (gobject.SIGNAL_RUN_LAST,
+                            gobject.TYPE_NONE, (gobject.TYPE_STRING,))}
 
     def __init__(self):
 

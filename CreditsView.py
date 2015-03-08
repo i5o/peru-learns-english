@@ -79,12 +79,12 @@ class Visor(gtk.DrawingArea):
     def __handle(self):
         cr = self.window.cairo_create()
         x, y, w, h = self.get_allocation()
-        cr.rectangle (x, y, w, h)
+        cr.rectangle(x, y, w, h)
         ww = self.imagen.get_width()
         hh = self.imagen.get_height()
         x = w / 2 - ww / 2
         cr.set_source_surface(self.imagen, x, self.posy)
-        cr.fill ()
+        cr.fill()
         self.posy -= 2
         if self.posy < -hh:
             self.posy = h

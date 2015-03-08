@@ -14,23 +14,23 @@ import pygame
 
 # import mapping to objects in other modules
 ALL_BY_MODULE = {
-    'spyral.debug' : ['DebugText'],
-    'spyral.sprite' : ['Sprite'],
-    'spyral.scene' : ['Scene'],
-    'spyral.image' : ['Image'],
-    'spyral.vector' : ['Vec2D'],
-    'spyral.rect' : ['Rect'],
-    'spyral.animation' : ['Animation'],
-    'spyral.director' : ['quit'],
-    'spyral.core' : ['_init', '_quit', '_get_executing_scene'],
-    'spyral.font' : ['Font'],
-    'spyral.clock' : ['GameClock'],
-    'spyral.event' : ['keys', 'mods', 'queue', 'Event',
-                      'EventHandler', 'LiveEventHandler'],
-    'spyral.form' : ['Form'],
-    'spyral.dev' : ['_get_spyral_path'],
-    'spyral.actor' : ['Actor'],
-    'spyral.util' : ['anchor_offset'],
+    'spyral.debug': ['DebugText'],
+    'spyral.sprite': ['Sprite'],
+    'spyral.scene': ['Scene'],
+    'spyral.image': ['Image'],
+    'spyral.vector': ['Vec2D'],
+    'spyral.rect': ['Rect'],
+    'spyral.animation': ['Animation'],
+    'spyral.director': ['quit'],
+    'spyral.core': ['_init', '_quit', '_get_executing_scene'],
+    'spyral.font': ['Font'],
+    'spyral.clock': ['GameClock'],
+    'spyral.event': ['keys', 'mods', 'queue', 'Event',
+                     'EventHandler', 'LiveEventHandler'],
+    'spyral.form': ['Form'],
+    'spyral.dev': ['_get_spyral_path'],
+    'spyral.actor': ['Actor'],
+    'spyral.util': ['anchor_offset'],
     'spyral.exceptions': ['SceneHasNoSizeError', 'NotStylableError',
                           'NoImageError', 'BackgroundSizeError',
                           'LayersAlreadySetError', 'UnusedStyleWarning'],
@@ -47,7 +47,9 @@ for module, items in ALL_BY_MODULE.iteritems():
     for item in items:
         OBJECT_ORIGINS[item] = module
 
+
 class SpyralModule(ModuleType):
+
     """Automatically import objects from the modules."""
 
     def __getattr__(self, name):

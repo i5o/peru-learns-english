@@ -40,8 +40,9 @@ from CreditsView import CreditsView
 BASE_PATH = os.path.dirname(__file__)
 
 OLD_GTK = False
-if gtk.pygtk_version[0]==2 and gtk.pygtk_version[1]<15:
+if gtk.pygtk_version[0] == 2 and gtk.pygtk_version[1] < 15:
     OLD_GTK = True
+
 
 def ocultar(widget):
     widget.stop()
@@ -55,13 +56,13 @@ class Main(gtk.Window):
 
         self.set_title("Peru Learns English")
         self.set_icon_from_file(os.path.join(
-            BASE_PATH , "Iconos", "icono.svg"))
+            BASE_PATH, "Iconos", "icono.svg"))
 
         self.modify_bg(gtk.STATE_NORMAL, COLORES["window"])
         self.set_border_width(2)
 
         # FIXME: No funciona en la XO con fedora 11
-        #self.set_resizable(False)
+        # self.set_resizable(False)
 
         if OLD_GTK:
             # Esto es un hack para que gtk viejo en la XO no se maree
@@ -123,7 +124,7 @@ class Main(gtk.Window):
 
     def __game_return_to_video(self, widget, topic):
         self.__play_video(widget, topic)
-        #self.videoview.videoplayer.stop()
+        # self.videoview.videoplayer.stop()
 
     def __play_game(self, widget, topic):
         self.__switch(False, "game", topic)
@@ -135,7 +136,7 @@ class Main(gtk.Window):
         self.toolbar.homebutton.set_active(False)
         self.__switch(False, "Topics", topic)
         self.videoview.set_full(False)
-        #self.videoview.videoplayer.pause()
+        # self.videoview.videoplayer.pause()
 
     def __play_instructions(self, widget):
         self.__switch(False, "Instructions")

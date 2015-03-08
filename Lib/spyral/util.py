@@ -5,6 +5,7 @@ import spyral
 import math
 import pygame
 
+
 def _anchor_offset(anchor, width, height):
     """
     Given an `anchor` position (either a string or a 2-tuple position), finds
@@ -55,6 +56,7 @@ def _anchor_offset(anchor, width, height):
         offset = a * spyral.Vec2D(-1, -1)
     return spyral.Vec2D(offset)
 
+
 @spyral.memoize._ImageMemoize
 def scale_surface(s, target_size):
     """
@@ -69,11 +71,15 @@ def scale_surface(s, target_size):
                 int(math.ceil(target_size[1])))
     if new_size == s.get_size():
         return s
-    t = pygame.transform.smoothscale(s, new_size,
-                                     spyral.image._new_spyral_surface(new_size))
+    t = pygame.transform.smoothscale(
+        s,
+        new_size,
+        spyral.image._new_spyral_surface(new_size))
     return t
 
+
 class _Blit(object):
+
     """
     An internal class to represent a drawable `surface` with additional data
     (e.g. `rect` representing its location on screen, whether it's `static`).
@@ -115,9 +121,10 @@ class _Blit(object):
     """
     __slots__ = ['surface', 'position', 'rect', 'area', 'layer',
                  'flags', 'static', 'clipping', 'final_size']
+
     def __init__(self, surface, position, area, layer, flags, static):
         self.surface = surface   # pygame surface
-        self.position = position # coordinates to draw at
+        self.position = position  # coordinates to draw at
         self.area = area         # portion of the surface to be drawn to screen
         self.layer = layer       # layer in scene
         self.flags = flags       # any drawing flags (currently unusued)
@@ -159,7 +166,9 @@ class _Blit(object):
         self.rect = pygame.Rect((self.position[0], self.position[1]),
                                 self.surface.get_size())
 
+
 class _CollisionBox(object):
+
     """
     An internal class for managing the collidable area for a sprite or view.
     In many ways, this is a reduced form of a _Blit.
@@ -181,6 +190,7 @@ class _CollisionBox(object):
 
     """
     __slots__ = ['position', 'rect', 'area']
+
     def __init__(self, position, area):
         self.position = position
         self.area = area
@@ -196,4 +206,3 @@ class _CollisionBox(object):
 
     def finalize(self):
         self.rect = spyral.Rect(self.position, self.area.size)
-        

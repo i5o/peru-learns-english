@@ -36,10 +36,10 @@ BASE_PATH = os.path.dirname(__file__)
 class Toolbar(gtk.EventBox):
 
     __gsignals__ = {
-    "activar": (gobject.SIGNAL_RUN_FIRST,
-        gobject.TYPE_NONE, (gobject.TYPE_STRING, )),
-    "video": (gobject.SIGNAL_RUN_FIRST,
-        gobject.TYPE_NONE, (gobject.TYPE_STRING, ))}
+        "activar": (gobject.SIGNAL_RUN_FIRST,
+                    gobject.TYPE_NONE, (gobject.TYPE_STRING, )),
+        "video": (gobject.SIGNAL_RUN_FIRST,
+                  gobject.TYPE_NONE, (gobject.TYPE_STRING, ))}
 
     def __init__(self):
 
@@ -85,7 +85,8 @@ class Toolbar(gtk.EventBox):
         self.menu = Menu()
 
         self.menubutton = PopupMenuButton("Topics")
-        self.menubutton.child.modify_font(pango.FontDescription("DejaVu Sans Bold 16"))
+        self.menubutton.child.modify_font(
+            pango.FontDescription("DejaVu Sans Bold 16"))
         self.menubutton.child.modify_fg(gtk.STATE_NORMAL, COLORES["text"])
         self.menubutton.child.modify_bg(gtk.STATE_NORMAL, COLORES["toolbar"])
         self.menubutton.set_menu(self.menu)
@@ -127,8 +128,8 @@ class Toolbar(gtk.EventBox):
 class Menu(gtk.Menu):
 
     __gsignals__ = {
-    "activar": (gobject.SIGNAL_RUN_FIRST,
-        gobject.TYPE_NONE, (gobject.TYPE_STRING, ))}
+        "activar": (gobject.SIGNAL_RUN_FIRST,
+                    gobject.TYPE_NONE, (gobject.TYPE_STRING, ))}
 
     def __init__(self):
         gtk.Menu.__init__(self)

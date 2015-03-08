@@ -34,17 +34,17 @@ gobject.threads_init()
 class JAMediaReproductor(gobject.GObject):
 
     __gsignals__ = {
-    "endfile": (gobject.SIGNAL_RUN_LAST,
-        gobject.TYPE_NONE, []),
-    "estado": (gobject.SIGNAL_RUN_LAST,
-        gobject.TYPE_NONE, (gobject.TYPE_STRING,)),
-    "newposicion": (gobject.SIGNAL_RUN_LAST,
-        gobject.TYPE_NONE, (gobject.TYPE_INT,)),
-    "video": (gobject.SIGNAL_RUN_LAST,
-        gobject.TYPE_NONE, (gobject.TYPE_BOOLEAN,)),
-    "loading-buffer": (gobject.SIGNAL_RUN_LAST,
-        gobject.TYPE_NONE, (gobject.TYPE_INT, )),
-        }
+        "endfile": (gobject.SIGNAL_RUN_LAST,
+                    gobject.TYPE_NONE, []),
+        "estado": (gobject.SIGNAL_RUN_LAST,
+                   gobject.TYPE_NONE, (gobject.TYPE_STRING,)),
+        "newposicion": (gobject.SIGNAL_RUN_LAST,
+                        gobject.TYPE_NONE, (gobject.TYPE_INT,)),
+        "video": (gobject.SIGNAL_RUN_LAST,
+                  gobject.TYPE_NONE, (gobject.TYPE_BOOLEAN,)),
+        "loading-buffer": (gobject.SIGNAL_RUN_LAST,
+                           gobject.TYPE_NONE, (gobject.TYPE_INT, )),
+    }
 
     # Estados: playing, paused, None
 
@@ -160,7 +160,7 @@ class JAMediaReproductor(gobject.GObject):
 
     def pause_play(self):
         if self.estado == gst.STATE_PAUSED or self.estado == gst.STATE_NULL \
-            or self.estado == gst.STATE_READY:
+                or self.estado == gst.STATE_READY:
             self.play()
         elif self.estado == gst.STATE_PLAYING:
             self.pause()
@@ -182,7 +182,7 @@ class JAMediaReproductor(gobject.GObject):
             self.player.set_property("uri", direccion)
             # FIXME: Quitado por consideraciones de rendimiento en la XO
             #suburi = os.path.join(os.path.dirname(uri), "subtitulos.srt")
-            #if os.path.exists(suburi):
+            # if os.path.exists(suburi):
             #    self.player.set_property("suburi", "file://" + suburi)
             #    self.player.set_property("subtitle-font-desc", "sans bold 18")
             self.progressbar = True

@@ -40,10 +40,10 @@ EDADES = range(5, 21, 1)
 class VideoView(gtk.EventBox):
 
     __gsignals__ = {
-    "flashcards": (gobject.SIGNAL_RUN_FIRST,
-        gobject.TYPE_NONE, (gobject.TYPE_PYOBJECT, )),
-    "game": (gobject.SIGNAL_RUN_FIRST,
-        gobject.TYPE_NONE, (gobject.TYPE_STRING, ))}
+        "flashcards": (gobject.SIGNAL_RUN_FIRST,
+                       gobject.TYPE_NONE, (gobject.TYPE_PYOBJECT, )),
+        "game": (gobject.SIGNAL_RUN_FIRST,
+                 gobject.TYPE_NONE, (gobject.TYPE_STRING, ))}
 
     def __init__(self):
 
@@ -60,7 +60,7 @@ class VideoView(gtk.EventBox):
         self.titulo.modify_fg(gtk.STATE_NORMAL, COLORES["window"])
 
         flashcards = gtk.Button()
-        #flashcards.set_relief(gtk.RELIEF_NONE)
+        # flashcards.set_relief(gtk.RELIEF_NONE)
         imagen = gtk.Image()
         imagen.set_from_file("Imagenes/flashcard_banner.png")
         flashcards.modify_bg(gtk.STATE_NORMAL, COLORES["toolbar"])
@@ -72,17 +72,33 @@ class VideoView(gtk.EventBox):
         self.tabla.set_border_width(10)
 
         self.imagen_juego = gtk.Button()
-        #self.imagen_juego.set_relief(gtk.RELIEF_NONE)
+        # self.imagen_juego.set_relief(gtk.RELIEF_NONE)
         imagen = gtk.Image()
         imagen.set_from_file("Imagenes/juego1.png")
         self.imagen_juego.modify_bg(gtk.STATE_NORMAL, COLORES["toolbar"])
         self.imagen_juego.add(imagen)
-        
-        self.flashcards_preview = FlashCardsPreview()
-        self.flashcards_preview.connect("button-press-event", self.__toggle_flashcards)
 
-        self.tabla.attach(self.flashcards_preview, 0, 3, 1, 5, xpadding=10, ypadding=10)
-        self.tabla.attach(self.imagen_juego, 3, 5, 3, 5, xpadding=10, ypadding=10)
+        self.flashcards_preview = FlashCardsPreview()
+        self.flashcards_preview.connect(
+            "button-press-event",
+            self.__toggle_flashcards)
+
+        self.tabla.attach(
+            self.flashcards_preview,
+            0,
+            3,
+            1,
+            5,
+            xpadding=10,
+            ypadding=10)
+        self.tabla.attach(
+            self.imagen_juego,
+            3,
+            5,
+            3,
+            5,
+            xpadding=10,
+            ypadding=10)
         self.tabla.attach(flashcards, 3, 5, 1, 3, xpadding=10, ypadding=10)
 
         align.add(self.tabla)
@@ -116,7 +132,7 @@ class VideoView(gtk.EventBox):
             child.hide()
 
         if self.full:
-            #self.videoplayer.hide()
+            # self.videoplayer.hide()
             self.tabla.set_homogeneous(True)
             self.tabla.set_property("column-spacing", 8)
             self.tabla.set_property("row-spacing", 8)
@@ -126,9 +142,8 @@ class VideoView(gtk.EventBox):
             self.tabla.set_homogeneous(False)
             self.tabla.set_property("column-spacing", 0)
             self.tabla.set_property("row-spacing", 0)
-            #self.videoplayer.show()
+            # self.videoplayer.show()
             self.full = True
-
 
     def stop(self):
         self.flashcards_preview.stop()
@@ -187,7 +202,7 @@ class FlashCardsPreview(gtk.EventBox):
         gtk.EventBox.__init__(self)
 
         self.modify_bg(gtk.STATE_NORMAL, COLORES["window"])
-        #self.set_border_width(20)
+        # self.set_border_width(20)
 
         self.vocabulario = []
         self.index_select = 0
@@ -241,7 +256,7 @@ class FlashCardsPreview(gtk.EventBox):
     def utter(self, widget, event):
         palabra = self.label.get_text()
         #self.label.modify_fg(gtk.STATE_NORMAL, COLORES["rojo"])
-        self.label.set_markup("<b>"+palabra+"</b>")
+        self.label.set_markup("<b>" + palabra + "</b>")
         gobject.idle_add(self.utter2, palabra)
         return True
 
@@ -262,8 +277,12 @@ class FlashCardsPreview(gtk.EventBox):
 
     def __run_secuencia(self, widget=None, offset=1):
         self.stop()
-        self.path = os.path.join(self.topic, "Imagenes",
-            "%s.png" % self.vocabulario[self.index_select][0])
+        self.path = os.path.join(
+            self.topic,
+            "Imagenes",
+            "%s.png" %
+            self.vocabulario[
+                self.index_select][0])
         self.imagenplayer = ImagePlayer(self.drawing)
         self.imagenplayer.load(self.path)
         self.label.set_text(
@@ -318,9 +337,15 @@ class DialogLogin(gtk.Dialog):
 
     def __init__(self, parent_window=None):
 
-        gtk.Dialog.__init__(self, title="Identify yourself", parent=parent_window,
-            buttons= ("OK", gtk.RESPONSE_ACCEPT,
-            "Cancel", gtk.RESPONSE_CANCEL))
+        gtk.Dialog.__init__(
+            self,
+            title="Identify yourself",
+            parent=parent_window,
+            buttons=(
+                "OK",
+                gtk.RESPONSE_ACCEPT,
+                "Cancel",
+                gtk.RESPONSE_CANCEL))
 
         # self.set_decorated(False)
         self.modify_bg(gtk.STATE_NORMAL, COLORES["window"])
@@ -347,7 +372,7 @@ class DialogLogin(gtk.Dialog):
         screen = gtk.gdk.Screen()
         x = screen.get_width() - width - 50
         y = (screen.get_height() - height) / 2
-        self.move(x,y)
+        self.move(x, y)
 
         if users:
             self.frame1.show_all()
@@ -380,7 +405,7 @@ class DialogLogin(gtk.Dialog):
             "Apellido": "",
             "Edad": "",
             "Escuela": "",
-             "Grado": ""}
+            "Grado": ""}
         user = self.frame1.combo.get_active_text()
         if user:
             _dict = get_user_dict(user)
@@ -396,11 +421,11 @@ class DialogLogin(gtk.Dialog):
 class Frame1(gtk.Frame):
 
     __gsignals__ = {
-    "user": (gobject.SIGNAL_RUN_FIRST,
-        gobject.TYPE_NONE, (gobject.TYPE_STRING, )),
-    "new-user": (gobject.SIGNAL_RUN_FIRST,
-        gobject.TYPE_NONE, [])
-        }
+        "user": (gobject.SIGNAL_RUN_FIRST,
+                 gobject.TYPE_NONE, (gobject.TYPE_STRING, )),
+        "new-user": (gobject.SIGNAL_RUN_FIRST,
+                     gobject.TYPE_NONE, [])
+    }
 
     def __init__(self, users):
 
@@ -445,9 +470,9 @@ class Frame1(gtk.Frame):
 class Frame2(gtk.Frame):
 
     __gsignals__ = {
-    "activar": (gobject.SIGNAL_RUN_FIRST,
-        gobject.TYPE_NONE, (gobject.TYPE_BOOLEAN, ))
-        }
+        "activar": (gobject.SIGNAL_RUN_FIRST,
+                    gobject.TYPE_NONE, (gobject.TYPE_BOOLEAN, ))
+    }
 
     def __init__(self):
 

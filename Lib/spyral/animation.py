@@ -1,7 +1,9 @@
 """Animations interpolate a property between two values over a number of frames.
 They can be combined to run at the same time, or directly after each other."""
 
+
 class Animation(object):
+
     """
     Creates an animation on *property*, with the specified
     *easing*, to last *duration* in seconds.
@@ -98,6 +100,7 @@ class Animation(object):
 
 
 class MultiAnimation(Animation):
+
     """
     Class for creating parallel animation from two other animations.
 
@@ -109,6 +112,7 @@ class MultiAnimation(Animation):
     loop is accepted as a kwarg, default is True if any child
     loops, or False otherwise.
     """
+
     def __init__(self, *animations, **kwargs):
         self.properties = set()
         self._animations = []
@@ -148,6 +152,7 @@ class MultiAnimation(Animation):
 
 
 class SequentialAnimation(Animation):
+
     """
     An animation that represents the input animations in sequence.
 
@@ -158,6 +163,7 @@ class SequentialAnimation(Animation):
     the entire SequentialAnimation. If loop is set to true, the
     entire SequentialAnimation will loop indefinitely.
     """
+
     def __init__(self, *animations, **kwargs):
         self.properties = set()
         self._animations = animations
@@ -180,25 +186,33 @@ class SequentialAnimation(Animation):
     def evaluate(self, sprite, progress):
         res = {}
         if progress == self.duration:
-            res.update(self._animations[-1].evaluate(sprite,
-                       self._animations[-1].duration))
+            res.update(
+                self._animations[-1].evaluate(sprite, self._animations[-1].duration))
             return res
         i = 0
         while progress > self._animations[i].duration:
             progress -= self._animations[i].duration
             i += 1
         if i > 0:
-            res.update(self._animations[i - 1].evaluate(sprite,
-                       self._animations[i - 1].duration))
+            res.update(
+                self._animations[
+                    i -
+                    1].evaluate(
+                    sprite,
+                    self._animations[
+                        i -
+                        1].duration))
         res.update(self._animations[i].evaluate(sprite, progress))
         return res
 
 
 class DelayAnimation(Animation):
+
     """
     Animation which performs no actions. Useful for lining up appended
     and parallel animations so that things run at the right times.
     """
+
     def __init__(self, duration=1.0):
         self.absolute = False
         self.properties = set([])

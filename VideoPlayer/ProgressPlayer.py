@@ -31,10 +31,10 @@ BASE_PATH = os.path.dirname(__file__)
 class ProgressPlayer(gtk.EventBox):
 
     __gsignals__ = {
-    "seek": (gobject.SIGNAL_RUN_LAST,
-        gobject.TYPE_NONE, (gobject.TYPE_FLOAT, )),
-    "volumen": (gobject.SIGNAL_RUN_LAST,
-        gobject.TYPE_NONE, (gobject.TYPE_FLOAT,))}
+        "seek": (gobject.SIGNAL_RUN_LAST,
+                 gobject.TYPE_NONE, (gobject.TYPE_FLOAT, )),
+        "volumen": (gobject.SIGNAL_RUN_LAST,
+                    gobject.TYPE_NONE, (gobject.TYPE_FLOAT,))}
 
     def __init__(self):
 
@@ -67,13 +67,14 @@ class ProgressPlayer(gtk.EventBox):
 
 
 class BarraProgreso(gtk.EventBox):
+
     """
     Barra de progreso para mostrar estado de reproduccion.
     """
 
     __gsignals__ = {
-    "user-set-value": (gobject.SIGNAL_RUN_LAST,
-        gobject.TYPE_NONE, (gobject.TYPE_FLOAT, ))}
+        "user-set-value": (gobject.SIGNAL_RUN_LAST,
+                           gobject.TYPE_NONE, (gobject.TYPE_FLOAT, ))}
 
     def __init__(self):
 
@@ -108,13 +109,14 @@ class BarraProgreso(gtk.EventBox):
 
 
 class ProgressBar(gtk.HScale):
+
     """
     Escala de SlicerBalance.
     """
 
     __gsignals__ = {
-    "user-set-value": (gobject.SIGNAL_RUN_LAST,
-        gobject.TYPE_NONE, (gobject.TYPE_FLOAT, ))}
+        "user-set-value": (gobject.SIGNAL_RUN_LAST,
+                           gobject.TYPE_NONE, (gobject.TYPE_FLOAT, ))}
 
     def __init__(self, ajuste):
 
@@ -196,7 +198,7 @@ class ProgressBar(gtk.HScale):
         yimage = yy + hh / 2 - imgh / 2
 
         self.window.draw_pixbuf(gc, self.pixbuf, 0, 0, ximage, yimage,
-            imgw, imgh, gtk.gdk.RGB_DITHER_NORMAL, 0, 0)
+                                imgw, imgh, gtk.gdk.RGB_DITHER_NORMAL, 0, 0)
 
         return True
 
@@ -204,8 +206,8 @@ class ProgressBar(gtk.HScale):
 class ControlVolumen(gtk.VolumeButton):
 
     __gsignals__ = {
-    "volumen": (gobject.SIGNAL_RUN_LAST,
-        gobject.TYPE_NONE, (gobject.TYPE_FLOAT,))}
+        "volumen": (gobject.SIGNAL_RUN_LAST,
+                    gobject.TYPE_NONE, (gobject.TYPE_FLOAT,))}
 
     def __init__(self):
 

@@ -110,11 +110,14 @@ GameClock.schedule_interval.
 """
 
 import time
+from functools import reduce
 
 
 class _IntervalItem(object):
+
     """An interval item runs after an elapsed interval."""
     __slots__ = ['func', 'interval', 'lasttime', 'life', 'args']
+
     def __init__(self, func, interval, curtime, life, args):
         self.func = func
         self.interval = float(interval)
@@ -124,6 +127,7 @@ class _IntervalItem(object):
 
 
 class GameClock(object):
+
     """
     GameClock is an implementation of fixed-timestep clocks used for
     running the game.
@@ -170,14 +174,15 @@ class GameClock(object):
                     five seconds
     =============== ============
     """
+
     def __init__(self,
-            max_ups=30,
-            max_fps=0,
-            use_wait=False,
-            time_source=time.time,
-            update_callback=None,
-            frame_callback=None,
-            paused_callback=None):
+                 max_ups=30,
+                 max_fps=0,
+                 use_wait=False,
+                 time_source=time.time,
+                 update_callback=None,
+                 frame_callback=None,
+                 paused_callback=None):
 
         # Configurables.
         self.get_ticks = time_source
@@ -226,6 +231,7 @@ class GameClock(object):
     @property
     def max_ups(self):
         return self._max_ups
+
     @max_ups.setter
     def max_ups(self, val):
         self._max_ups = val
@@ -234,6 +240,7 @@ class GameClock(object):
     @property
     def max_fps(self):
         return self._max_fps
+
     @max_fps.setter
     def max_fps(self, val):
         self._max_fps = val
@@ -242,6 +249,7 @@ class GameClock(object):
     @property
     def game_time(self):
         return self._game_time
+
     @property
     def paused(self):
         return self._paused
@@ -279,7 +287,7 @@ class GameClock(object):
             self.num_updates += 1
             if self.update_callback:
                 self._update_ready = True
-#ORIG
+# ORIG
 #        if (real_time + self.cost_of_frame < self._next_update) and
 #            (real_time >= self._next_frame):
 #            self.dt_frame = real_time - self._last_frame
@@ -288,9 +296,9 @@ class GameClock(object):
 #            self.num_frames += 1
 #            if self.frame_callback:
 #                self._frame_ready = True
-#END ORIG
+# END ORIG
 #
-#SACRIFICE FRAMES TO MAINTAIN UPDATES
+# SACRIFICE FRAMES TO MAINTAIN UPDATES
         if real_time >= self._next_frame:
             do_frame = False
             if real_time + self.cost_of_frame <= self._next_update:
@@ -308,7 +316,7 @@ class GameClock(object):
                 self.num_frames += 1
                 if self.frame_callback:
                     self._frame_ready = True
-#END SACRIFICE FRAMES TO MAINTAIN UPDATES
+# END SACRIFICE FRAMES TO MAINTAIN UPDATES
 #
         if real_time - self._last_frame >= self._update_interval or (
                 real_time + self.cost_of_frame < self._next_update and
@@ -402,7 +410,7 @@ class GameClock(object):
         """
         self.unschedule(func)
         item = _IntervalItem(
-            func, interval, self.get_ticks(), life, [interval]+list(args))
+            func, interval, self.get_ticks(), life, [interval] + list(args))
         self._schedules.append(item)
         self._need_sort = True
 

@@ -5,9 +5,11 @@ Rects are a convenience class for managing rectangular regions.
 import pygame
 import spyral
 
+
 class Rect(object):
+
     """
-    Rect represents a rectangle and provides some useful features. Rects can 
+    Rect represents a rectangle and provides some useful features. Rects can
     be specified 3 ways in the constructor:
 
     #. Four numbers, ``x``, ``y``, ``width``, ``height``
@@ -40,6 +42,7 @@ class Rect(object):
     Vec2D(64, 64)
 
     """
+
     def __init__(self, *args):
         if len(args) == 1:
             r = args[0]

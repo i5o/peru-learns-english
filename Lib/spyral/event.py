@@ -32,6 +32,7 @@ import random
 import base64
 from weakmethod import WeakMethod as _wm
 
+
 def WeakMethod(func):
     try:
         return _wm(func)
@@ -41,7 +42,9 @@ def WeakMethod(func):
 _TYPE_TO_ATTRS = None
 _TYPE_TO_TYPE = None
 
+
 class Event(object):
+
     """
     A class for building for attaching data to an event.
     Keyword arguments will be named attributes of the Event when it is passed
@@ -50,6 +53,7 @@ class Event(object):
         collision_event = Event(ball=ball, paddle=paddle)
         spyral.event.queue("ball.collides.paddle", collision_event)
     """
+
     def __init__(self, **kwargs):
         self.__dict__.update(kwargs)
 
@@ -58,6 +62,7 @@ _EVENT_NAMES = ['QUIT', 'ACTIVEEVENT', 'KEYDOWN', 'KEYUP', 'MOUSEMOTION',
                 'MOUSEBUTTONUP', 'VIDEORESIZE', 'VIDEOEXPOSE', 'USEREVENT',
                 'MOUSEBUTTONDOWN']
 MOUSE_MAP = ['left', 'middle', 'right', 'scroll_up', 'scroll_down']
+
 
 def _init():
     """
@@ -90,6 +95,7 @@ def _init():
         pygame.VIDEOEXPOSE: "system.video_expose",
     }
 
+
 def queue(event_name, event=None, scene=None):
     """
     Queues a new event in the system, meaning that it will be run at the next
@@ -107,6 +113,7 @@ def queue(event_name, event=None, scene=None):
         scene = spyral._get_executing_scene()
     scene._queue_event(event_name, event)
 
+
 def handle(event_name, event=None, scene=None):
     """
     Instructs spyral to execute the handlers for this event right now. When you
@@ -123,6 +130,7 @@ def handle(event_name, event=None, scene=None):
     if scene is None:
         scene = spyral._get_executing_scene()
     scene._handle_event(event_name, event)
+
 
 def register(event_namespace, handler,
              args=None, kwargs=None, priority=0, scene=None):
@@ -154,6 +162,7 @@ def register(event_namespace, handler,
         scene = spyral._get_executing_scene()
     scene._reg_internal(event_namespace, (WeakMethod(handler),),
                         args, kwargs, priority, False)
+
 
 def register_dynamic(event_namespace, handler_string,
                      args=None, kwargs=None, priority=0, scene=None):
@@ -193,6 +202,7 @@ def register_dynamic(event_namespace, handler_string,
     scene._reg_internal(event_namespace, (handler_string,),
                         args, kwargs, priority, True)
 
+
 def register_multiple(event_namespace, handlers, args=None,
                       kwargs=None, priority=0, scene=None):
     """
@@ -221,6 +231,7 @@ def register_multiple(event_namespace, handlers, args=None,
         scene = spyral._get_executing_scene()
     scene._reg_internal(event_namespace, map(WeakMethod, handlers),
                         args, kwargs, priority, False)
+
 
 def register_multiple_dynamic(event_namespace, handler_strings, args=None,
                               kwargs=None, priority=0, scene=None):
@@ -253,6 +264,7 @@ def register_multiple_dynamic(event_namespace, handler_strings, args=None,
     scene._reg_internal(event_namespace, handler_strings,
                         args, kwargs, priority, True)
 
+
 def unregister(event_namespace, handler, scene=None):
     """
     Unregisters a registered handler for that namespace. Dynamic handler
@@ -269,6 +281,7 @@ def unregister(event_namespace, handler, scene=None):
         scene = spyral._get_executing_scene()
     scene._unregister(event_namespace, handler)
 
+
 def clear_namespace(namespace, scene=None):
     """
     Clears all handlers from namespaces that are at least as specific as the
@@ -282,6 +295,7 @@ def clear_namespace(namespace, scene=None):
     if scene is None:
         scene = spyral._get_executing_scene()
     scene._clear_namespace(namespace)
+
 
 def _pygame_to_spyral(event):
     """
@@ -302,7 +316,7 @@ def _pygame_to_spyral(event):
         e.left, e.middle, e.right = map(bool, event.buttons)
     elif event_type.startswith('input.mouse'):
         try:
-            m = MOUSE_MAP[event.button-1]
+            m = MOUSE_MAP[event.button - 1]
             setattr(e, "button", m)
         except IndexError:
             m = str(event.button)
@@ -312,10 +326,13 @@ def _pygame_to_spyral(event):
 
     return (event_type, e)
 
+
 class EventHandler(object):
+
     """
     Base event handler class.
     """
+
     def __init__(self):
         self._events = []
         self._mouse_pos = (0, 0)
@@ -352,6 +369,7 @@ class EventHandler(object):
 
 
 class LiveEventHandler(EventHandler):
+
     """
     An event handler which pulls events from the operating system.
 
@@ -366,6 +384,7 @@ class LiveEventHandler(EventHandler):
         reseed the random number generator, save the seed used. It
         will then be restored by the ReplayEventHandler.
     """
+
     def __init__(self, output_file=None):
         EventHandler.__init__(self)
         self._save = output_file is not None
@@ -391,10 +410,12 @@ class LiveEventHandler(EventHandler):
 
 
 class ReplayEventHandler(EventHandler):
+
     """
     An event handler which replays the events from a custom json
     file saved by the `LiveEventHandler`.
     """
+
     def __init__(self, input_file):
         EventHandler.__init__(self)
         self._file = open(input_file)
@@ -427,7 +448,9 @@ class ReplayEventHandler(EventHandler):
         self._mouse_pos = d['mouse']
         self._events.extend(events)
 
+
 class Mods(object):
+
     def __init__(self):
         self.none = pygame.KMOD_NONE
         self.lshift = pygame.KMOD_LSHIFT
@@ -440,6 +463,7 @@ class Mods(object):
         self.lalt = pygame.KMOD_LALT
         self.ralt = pygame.KMOD_RALT
         self.alt = pygame.KMOD_ALT
+
 
 class Keys(object):
 
@@ -457,7 +481,6 @@ class Keys(object):
         for original, new in renames:
             setattr(self, new, getattr(self, original))
             delattr(self, original)
-
 
     def load_keys_from_file(self, filename):
         fp = open(filename)
